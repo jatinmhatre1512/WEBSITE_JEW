@@ -13,30 +13,29 @@ Inquiries submitted on the site are emailed straight to the owner's inbox. There
 
 ## Features
 
-- âœ… SEO-optimized pages for all services, with `sitemap.xml` and `robots.txt`
-- âœ… Inquiry/RFQ form with file upload (PDF, CAD drawings, images)
-- âœ… Submissions emailed to the owner with attachments included
-- âœ… WhatsApp floating button on all pages
-- âœ… Click-to-call on mobile
-- âœ… Google Maps integration
-- âœ… Mobile-first responsive design
-- âœ… Fast loading, production-ready
+-   SEO-optimized pages for all services, with `sitemap.xml` and `robots.txt`
+-   Inquiry/RFQ form with file upload (PDF, CAD drawings, images)
+-   Submissions emailed to the owner with attachments included
+-   WhatsApp floating button on all pages
+-   Click-to-call on mobile
+-   Google Maps integration
+-   Mobile-first responsive design
+-   Fast loading, production-ready
 
 ## How an Inquiry Travels
 
 ```
 Visitor fills the form on /contact
-  â”‚   (src/components/InquiryFormPreview.js)
-  â–¼
+    (src/components/InquiryFormPreview.js)
 POST /api/inquiries                     runtime = 'nodejs'
-  â”‚   parse multipart body â†’ honeypot check â†’ rate limit
-  â”‚   â†’ validate text fields â†’ validate attachment metadata
-  â”‚   â†’ read attachment bytes into memory
-  â–¼
+ parse multipart body  honeypot check  rate limit
+     validate text fields  validate attachment metadata
+    read attachment bytes into memory
+  
 src/lib/mailer.js                       Nodemailer SMTP transport
-  â–¼
+  
 Gmail SMTP (smtp.gmail.com:465)
-  â–¼
+  
 Owner's inbox
 ```
 
@@ -83,8 +82,8 @@ The build does not require SMTP credentials â€” configuration is validated 
 Gmail refuses basic-auth logins from applications, so **a regular Google account password will not work here.** The sending account needs a Mail App Password, which is a separate 16-character credential scoped to one app.
 
 1. Sign in to the Google account that will send the inquiry emails.
-2. Enable **2-Step Verification** on that account (Google Account â†’ Security). App passwords are not available until 2-Step Verification is on.
-3. Go to **Google Account â†’ Security â†’ App passwords**.
+2. Enable **2-Step Verification** on that account (Google Account  Security). App passwords are not available until 2-Step Verification is on.
+3. Go to **Google Account  Security  App passwords**.
 4. Create a password for the **Mail** app. Google shows a 16-character value once.
 5. Put that value in `SMTP_PASSWORD` in `.env.local`, and set `SMTP_USER` to the same Gmail address.
 
@@ -93,7 +92,7 @@ Gmail refuses basic-auth logins from applications, so **a regular Google account
 The App Password belongs in exactly two places:
 
 1. **`.env.local`** on the local machine. This file is git-ignored through the `.env*.local` entry in `.gitignore`.
-2. **The Vercel project's environment variables**, under Settings â†’ Environment Variables.
+2. **The Vercel project's environment variables**, under Settings  Environment Variables.
 
 That is the whole list. Never commit it, never paste it into a chat message, an issue, a screenshot, or a support thread, and never put it in `.env.example` â€” that file is tracked and holds placeholders only. If the value is ever exposed, revoke it in the Google App passwords screen and generate a new one.
 
@@ -102,37 +101,37 @@ Also note that `SMTP_PASSWORD` has no `NEXT_PUBLIC_` prefix, and must never be g
 ## Project Structure
 
 ```
-â”œâ”€â”€ src/
-â”‚   â”œâ”€â”€ app/
-â”‚   â”‚   â”œâ”€â”€ page.js              # Home page
-â”‚   â”‚   â”œâ”€â”€ layout.js            # Root layout + site metadata
-â”‚   â”‚   â”œâ”€â”€ globals.css          # Global styles
-â”‚   â”‚   â”œâ”€â”€ sitemap.js           # sitemap.xml (public pages only)
-â”‚   â”‚   â”œâ”€â”€ robots.js            # robots.txt
-â”‚   â”‚   â”œâ”€â”€ about/page.js        # About page
-â”‚   â”‚   â”œâ”€â”€ contact/page.js      # Contact / RFQ page
-â”‚   â”‚   â”œâ”€â”€ projects/page.js     # Projects gallery
-â”‚   â”‚   â”œâ”€â”€ services/
-â”‚   â”‚   â”‚   â”œâ”€â”€ page.js          # Services listing
-â”‚   â”‚   â”‚   â””â”€â”€ [slug]/page.js   # Individual service pages + SERVICE_SLUGS
-â”‚   â”‚   â””â”€â”€ api/
-â”‚   â”‚       â””â”€â”€ inquiries/
-â”‚   â”‚           â””â”€â”€ route.js     # POST-only: validate, then email
-â”‚   â”œâ”€â”€ components/
-â”‚   â”‚   â”œâ”€â”€ Header.js
-â”‚   â”‚   â”œâ”€â”€ Footer.js
-â”‚   â”‚   â”œâ”€â”€ WhatsAppButton.js
-â”‚   â”‚   â”œâ”€â”€ IndustriesSection.js
-â”‚   â”‚   â””â”€â”€ InquiryFormPreview.js
-â”‚   â””â”€â”€ lib/
-â”‚       â”œâ”€â”€ mailer.js            # Nodemailer transport + message composition
-â”‚       â”œâ”€â”€ escapeHtml.js        # HTML escaping for the email body
-â”‚       â”œâ”€â”€ rateLimit.js         # In-memory per-IP submission limiter
-â”‚       â””â”€â”€ siteUrl.js           # Public origin resolution + fallback
-â”œâ”€â”€ public/
-â”‚   â””â”€â”€ images/                  # Site and project gallery images
-â”œâ”€â”€ .env.example                 # Environment template (placeholders only)
-â””â”€â”€ package.json
+  src/
+      app/
+         page.js              # Home page
+         layout.js            # Root layout + site metadata
+         globals.css          # Global styles
+         sitemap.js           # sitemap.xml (public pages only)
+         robots.js            # robots.txt
+         about/page.js        # About page
+         contact/page.js      # Contact / RFQ page
+         projects/page.js     # Projects gallery
+         services/
+            page.js          # Services listing
+            [slug]/page.js   # Individual service pages + SERVICE_SLUGS
+         api/
+             inquiries/
+                 route.js     # POST-only: validate, then email
+      components/
+         Header.js
+         Footer.js
+         WhatsAppButton.js
+         IndustriesSection.js
+         InquiryFormPreview.js
+      lib/
+          mailer.js            # Nodemailer transport + message composition
+          escapeHtml.js        # HTML escaping for the email body
+          rateLimit.js         # In-memory per-IP submission limiter
+          siteUrl.js           # Public origin resolution + fallback
+  public/
+      images/                  # Site and project gallery images
+  .env.example                 # Environment template (placeholders only)
+  package.json
 ```
 
 ## Pages & SEO
@@ -184,10 +183,10 @@ Public. **Every `NEXT_PUBLIC_*` value is inlined into the JavaScript bundle and 
 | Variable | Required | Example |
 |---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | no | `https://jitesh-engineering-works.vercel.app` |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | yes | `918308383673` |
-| `NEXT_PUBLIC_PHONE_NUMBER` | yes | `+919323397961` |
-| `NEXT_PUBLIC_OFFICE_NUMBER` | no | `+919923507724` |
-| `NEXT_PUBLIC_COMPANY_EMAIL` | yes | `jiteshengineeringworks20@gmail.com` |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | yes | `*****` |
+| `NEXT_PUBLIC_PHONE_NUMBER` | yes | `+****` |
+| `NEXT_PUBLIC_OFFICE_NUMBER` | no | `+***` |
+| `NEXT_PUBLIC_COMPANY_EMAIL` | yes | `****@gmail.com` |
 | `NEXT_PUBLIC_OWNER_NAME` | no | `Rajesh Pujari` |
 
 ## Known Limitations
@@ -218,7 +217,7 @@ The spec defines 20 correctness properties covering validation, HTML escaping, a
 
 ## Customization
 
-- Update contact details in `.env.local` â€” `NEXT_PUBLIC_PHONE_NUMBER`, `NEXT_PUBLIC_OFFICE_NUMBER`, `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_COMPANY_EMAIL`, `NEXT_PUBLIC_OWNER_NAME`. These are read across the header, footer, and call-to-action buttons, so changing a number in one place updates the whole site.
+- Update contact details in `.env.local` `NEXT_PUBLIC_PHONE_NUMBER`, `NEXT_PUBLIC_OFFICE_NUMBER`, `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_COMPANY_EMAIL`, `NEXT_PUBLIC_OWNER_NAME`. These are read across the header, footer, and call-to-action buttons, so changing a number in one place updates the whole site.
 - Replace or add images in `public/images/`.
 - Update the Google Maps embed in `src/app/contact/page.js` â€” swap the `src` of the `<iframe>` for a new embed URL from Google Maps.
 - Modify services data in `src/app/services/[slug]/page.js`. Adding a key to `servicesData` also adds the page to the sitemap, since both read `SERVICE_SLUGS`.
